@@ -1,0 +1,20 @@
+all:
+	ghc -c HDaemon/Server.hs
+	ghc -c HDaemon/Foreign.hs -XForeignFunctionInterface
+	ghc -c win32.c
+	ghc -o HDaemon.exe \
+		-package Win32 \
+		-threaded \
+		win32.o \
+		HDaemon/Foreign_stub.o \
+		HDaemon/Foreign.o \
+		HDaemon/Server.o
+
+clean:
+	rm -f HDaemon.exe
+	rm -f *.o
+	rm -f HDaemon/*.o
+	rm -f HDaemon/*.hi
+	rm -f HDaemon/*_stub.h
+	rm -f HDaemon/*_stub.c
+
