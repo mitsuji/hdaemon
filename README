@@ -1,0 +1,53 @@
+===========================================================
+ Haskell Daemonize Example
+===========================================================
+
+This is a very simple example of daemonizing Haskell code
+for both Unix and Windows.
+
+
+
+[Prerequisites]
+
+Haskell Platform >= 2010.2.0.0
+
+
+
+[for Unix (Mac OS X and Linux)]
+
+to comple daemon
+> make
+> make clean
+
+to start daemon
+> sudo ./hdaemond [Log Path]
+> sudo ./hdaemond /Users/tkms/Documents/dev/hdaemon/log1.txt
+
+to stop daemon
+> sudo kill -s TERM `cat /var/run/hdaemon.pid`
+
+
+
+[for Windows]
+
+to comple service
+> make -f Makefilw.win32
+> make -f Makefilw.win32 clean
+
+to install service
+> SC create [Service Name] binPath= "[Exe Path] """[Log Path]""""
+> SC create HDaemon1 binPath= "C:\Users\tkms\Documents\dev\hdaemon\HDaemon.exe """C:\Users\tkms\Documents\dev\hdaemon\log1.txt""""
+
+to start service
+> SC start [Service Name]
+> SC start HDaemon1
+
+to stop service
+> SC stop [Service Name]
+> SC stop HDaemon1 
+
+to uninstall service
+> SC delete [Service Name]
+> SC delete HDaemon1
+
+
