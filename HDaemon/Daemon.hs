@@ -7,10 +7,10 @@ import Foreign
 import HDaemon.Server
 
 
-termHandler :: MVar Bool -> SHandle -> IO()
+termHandler :: MVar() -> SHandle -> IO()
 termHandler continue handle = do 
   stop handle 
-  modifyMVar_ continue (\_ -> return(False))
+  putMVar continue ()
 
 hupHandler :: IO()
 hupHandler = return()
@@ -20,21 +20,12 @@ foreignMain :: IO()
 foreignMain = do
   confPath <- getConfPath
   handle <- start confPath
-  continue <- newMVar True
+  continue <- newEmptyMVar
   installHandler sigTERM (Catch $ termHandler continue handle ) Nothing
   installHandler sigHUP (Catch hupHandler) Nothing
-  wait continue
+  takeMVar continue
+  return()
   where
-    wait :: MVar Bool -> IO() 
-    wait continue = do
-      continue' <- readMVar continue
-      if continue'
-        then do
-        threadDelay $ 100 * 1000
-        wait continue 
-        else do
-        return()
-    
     getConfPath :: IO(String)
     getConfPath = do
       args <- getArgs
