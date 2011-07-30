@@ -4,6 +4,7 @@ all:
 	ghc -c posix.c
 	ghc -o hdaemond \
 		-threaded \
+		-package unix \
 		posix.o \
 		HDaemon/Daemon_stub.o \
 		HDaemon/Daemon.o \
